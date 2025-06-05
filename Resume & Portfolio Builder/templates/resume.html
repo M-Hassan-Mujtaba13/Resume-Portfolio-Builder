@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{ personal.name }}'s Resume & Portfolio</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #f0f0f5;
+    margin: 0;
+    padding: 2rem;
+    color: #333;
+    line-height: 1.5;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    padding: 2rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    animation: fadeIn 1s ease forwards;
+  }
+  h1, h2 {
+    color: #4b0082;
+  }
+  h1 {
+    font-size: 2.8rem;
+    margin-bottom: 0.2rem;
+  }
+  h2 {
+    border-bottom: 2px solid #a64ca6;
+    padding-bottom: 0.3rem;
+    margin-top: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  .personal-info {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  .summary {
+    font-style: italic;
+    background: #eee;
+    padding: 1rem;
+    border-left: 5px solid #a64ca6;
+    border-radius: 6px;
+  }
+  ul {
+    padding-left: 1.2rem;
+  }
+  li {
+    margin-bottom: 0.6rem;
+  }
+  .section-block {
+    margin-bottom: 1.5rem;
+  }
+  .experience, .education, .project {
+    margin-bottom: 1rem;
+  }
+  .experience-title, .education-degree, .project-name {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #6a1b9a;
+  }
+  .duration, .institution, .company, .project-link {
+    font-size: 0.9rem;
+    color: #555;
+    font-style: italic;
+  }
+  a.project-link {
+    color: #a64ca6;
+    text-decoration: none;
+  }
+  a.project-link:hover {
+    text-decoration: underline;
+  }
+  .skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+  .skill {
+    background: #a64ca6;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(15px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>{{ personal.name }}</h1>
+  <div class="personal-info">
+    <div>Email: {{ personal.email }}</div>
+    <div>Phone: {{ personal.phone }}</div>
+  </div>
+
+  {% if personal.summary %}
+  <div class="summary">
+    {{ personal.summary }}
+  </div>
+  {% endif %}
+
+  {% if education %}
+  <div class="section-block">
+    <h2>Education</h2>
+    {% for edu in education %}
+    <div class="education">
+      <div class="education-degree">{{ edu.degree }}</div>
+      <div class="institution">{{ edu.institution }}</div>
+      <div class="duration">{{ edu.year }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if experiences %}
+  <div class="section-block">
+    <h2>Experience</h2>
+    {% for exp in experiences %}
+    <div class="experience">
+      <div class="experience-title">{{ exp.title }}</div>
+      <div class="company">{{ exp.company }}</div>
+      <div class="duration">{{ exp.duration }}</div>
+      <p>{{ exp.description }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if skills %}
+  <div class="section-block">
+    <h2>Skills</h2>
+    <div class="skills-list">
+      {% for skill in skills %}
+      <div class="skill">{{ skill.strip() }}</div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if projects %}
+  <div class="section-block">
+    <h2>Portfolio Projects</h2>
+    {% for proj in projects %}
+    <div class="project">
+      <div class="project-name">{{ proj.name }}</div>
+      {% if proj.link %}
+      <a href="{{ proj.link }}" class="project-link" target="_blank" rel="noopener noreferrer">{{ proj.link }}</a>
+      {% endif %}
+      <p>{{ proj.description }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+
+</body>
+</html>

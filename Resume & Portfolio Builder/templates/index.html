@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Resume & Portfolio Builder</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    margin: 0; padding: 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 8px rgba(255,255,255,0.7);
+  }
+  form {
+    background: #2c2c54;
+    padding: 2rem;
+    border-radius: 15px;
+    max-width: 800px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  label {
+    display: block;
+    margin: 0.8rem 0 0.3rem;
+  }
+  input[type=text], input[type=email], textarea {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  button, .add-btn {
+    margin-top: 1rem;
+    padding: 0.6rem 1.2rem;
+    background: #f107a3;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 5px 15px rgba(241,7,163,0.6);
+  }
+  button:hover, .add-btn:hover {
+    background: #a2066d;
+  }
+  .section {
+    margin-bottom: 2rem;
+    background: #3e3e8e;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+  }
+  .dynamic-list > div {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: #4c4cba;
+    border-radius: 10px;
+    position: relative;
+  }
+  .remove-btn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: #ff4c4c;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 25px;
+  }
+  .remove-btn:hover {
+    background: #cc0000;
+  }
+</style>
+</head>
+<body>
+
+<h1>Resume & Portfolio Builder</h1>
+
+<form method="POST" id="resume-form">
+
+  <div class="section">
+    <h2>Personal Information</h2>
+    <label for="name">Full Name</label>
+    <input type="text" name="name" id="name" required />
+
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" required />
+
+    <label for="phone">Phone</label>
+    <input type="text" name="phone" id="phone" required />
+
+    <label for="summary">Professional Summary</label>
+    <textarea name="summary" id="summary" placeholder="Brief about yourself..."></textarea>
+  </div>
+
+  <div class="section">
+    <h2>Education</h2>
+    <div id="education-list" class="dynamic-list">
+      <!-- Education entries go here -->
+    </div>
+    <button type="button" class="add-btn" onclick="addEducation()">+ Add Education</button>
+  </div>
+
+  <div class="section">
+    <h2>Experience</h2>
+    <div id="experience-list" class="dynamic-list">
+      <!-- Experience entries go here -->
+    </div>
+    <button type="button" class="add-btn" onclick="addExperience()">+ Add Experience</button>
+  </div>
+
+  <div class="section">
+    <h2>Skills (comma separated)</h2>
+    <input type="text" name="skills" id="skills" placeholder="e.g. Python, JavaScript, Communication" />
+  </div>
+
+  <div class="section">
+    <h2>Portfolio Projects</h2>
+    <div id="project-list" class="dynamic-list">
+      <!-- Project entries go here -->
+    </div>
+    <button type="button" class="add-btn" onclick="addProject()">+ Add Project</button>
+  </div>
+
+  <button type="submit">Generate Resume & Portfolio</button>
+
+</form>
+
+<script>
+  let educationCount = 0;
+  let experienceCount = 0;
+  let projectCount = 0;
+
+  function createRemoveBtn(onclick) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "remove-btn";
+    btn.textContent = "×";
+    btn.onclick = onclick;
+    return btn;
+  }
+
+  function addEducation() {
+    const container = document.getElementById("education-list");
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <label>Degree/Certificate</label>
+      <input type="text" name="education[${educationCount}][degree]" required />
+      <label>Institution</label>
+      <input type="text" name="education[${educationCount}][institution]" required />
+      <label>Year</label>
+      <input type="text" name="education[${educationCount}][year]" required />
+    `;
+    div.appendChild(createRemoveBtn(() => div.remove()));
+    container.appendChild(div);
+    educationCount++;
+  }
+
+  function addExperience() {
+    const container = document.getElementById("experience-list");
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <label>Job Title</label>
+      <input type="text" name="experience[${experienceCount}][title]" required />
+      <label>Company</label>
+      <input type="text" name="experience[${experienceCount}][company]" required />
+      <label>Duration</label>
+      <input type="text" name="experience[${experienceCount}][duration]" required />
+      <label>Description</label>
+      <textarea name="experience[${experienceCount}][description]" rows="3" required></textarea>
+    `;
+    div.appendChild(createRemoveBtn(() => div.remove()));
+    container.appendChild(div);
+    experienceCount++;
+  }
+
+  function addProject() {
+    const container = document.getElementById("project-list");
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <label>Project Name</label>
+      <input type="text" name="project[${projectCount}][name]" required />
+      <label>Project Link (optional)</label>
+      <input type="text" name="project[${projectCount}][link]" />
+      <label>Description</label>
+      <textarea name="project[${projectCount}][description]" rows="3" required></textarea>
+    `;
+    div.appendChild(createRemoveBtn(() => div.remove()));
+    container.appendChild(div);
+    projectCount++;
+  }
+
+  // Initialize form with one entry each
+  window.onload = () => {
+    addEducation();
+    addExperience();
+    addProject();
+  };
+</script>
+
+</body>
+</html>
